@@ -1,0 +1,22 @@
+{% extends 'vault/base.html' %}
+{% block content %}
+<div style="max-width:560px;margin:0 auto;">
+  <div class="card">
+    <h2 style="margin-bottom:24px;color:#7c6af7;">Password Generator</h2>
+    <form method="GET">
+      <label>Password Length</label>
+      <input type="number" name="length" value="16" min="8" max="64"/>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Generate</button>
+    </form>
+    {% if password %}
+    <div style="margin-top:24px;background:#0f0f1a;padding:16px;border-radius:8px;text-align:center;">
+      <code style="font-size:18px;letter-spacing:2px;color:#7c6af7;">{{ password }}</code>
+    </div>
+    <div style="margin-top:12px;text-align:center;">
+      <span style="color:#{{ strength.color }};font-weight:600;">{{ strength.label }}</span>
+      <span style="color:#aaa;font-size:13px;margin-left:8px;">({{ strength.percentage }}%)</span>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

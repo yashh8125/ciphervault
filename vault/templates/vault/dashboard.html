@@ -1,0 +1,47 @@
+{% extends 'vault/base.html' %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+  <h2 style="color:#7c6af7;">Your Vault</h2>
+  <a href="/add/" class="btn btn-primary">+ Add Password</a>
+</div>
+
+<div class="stats-grid">
+  <div class="card" style="text-align:center;">
+    <div style="font-size:28px;font-weight:700;color:#7c6af7;">{{ total }}</div>
+    <div style="color:#aaa;font-size:12px;margin-top:4px;">Total</div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div style="font-size:28px;font-weight:700;color:#e74c3c;">{{ weak_count }}</div>
+    <div style="color:#aaa;font-size:12px;margin-top:4px;">Weak</div>
+  </div>
+  <div class="card" style="text-align:center;">
+    <div style="font-size:28px;font-weight:700;color:#27ae60;">{{ strong_count }}</div>
+    <div style="color:#aaa;font-size:12px;margin-top:4px;">Strong</div>
+  </div>
+</div>
+
+{% if entries %}
+  {% for e in entries %}
+  <div class="card">
+    <div class="entry-card">
+      <div class="entry-info">
+        <div style="font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.site }}</div>
+        <div style="font-size:12px;color:#aaa;margin-top:2px;">{{ e.username }}</div>
+        <div class="entry-password" style="margin-top:8px;">{{ e.password }}</div>
+      </div>
+      <div class="entry-actions">
+        <span class="badge" style="background:{% if e.strength.color == 'green' %}#1a3d2a{% elif e.strength.color == 'orange' %}#3d2a1a{% else %}#3d1a1a{% endif %};color:{% if e.strength.color == 'green' %}#27ae60{% elif e.strength.color == 'orange' %}#e67e22{% else %}#e74c3c{% endif %};">
+          {{ e.strength.label }}
+        </span>
+        <a href="/delete/{{ e.id }}/" class="btn btn-danger btn-sm">Delete</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% else %}
+<div class="card" style="text-align:center;padding:48px 20px;">
+  <p style="color:#aaa;">No passwords saved yet.</p>
+  <a href="/add/" class="btn btn-primary" style="margin-top:16px;">Add your first password</a>
+</div>
+{% endif %}
+{% endblock %}

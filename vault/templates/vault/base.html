@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CipherVault</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',sans-serif;background:#0f0f1a;color:#e0e0e0;min-height:100vh;}
+
+    /* ── Navbar ── */
+    nav{background:#1a1a2e;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2a2a4a;position:sticky;top:0;z-index:100;}
+    nav .brand{font-size:20px;font-weight:700;color:#7c6af7;white-space:nowrap;}
+    .nav-links{display:flex;gap:6px;flex-wrap:wrap;}
+    .nav-links a{color:#aaa;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px;transition:background .2s;}
+    .nav-links a:hover{color:#7c6af7;background:#2a2a4a;}
+
+    /* Hamburger */
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+    .hamburger span{display:block;width:22px;height:2px;background:#aaa;border-radius:2px;transition:.3s;}
+    .mobile-menu{display:none;flex-direction:column;background:#1a1a2e;border-top:1px solid #2a2a4a;padding:12px 24px 16px;}
+    .mobile-menu a{color:#aaa;text-decoration:none;font-size:14px;padding:10px 0;border-bottom:1px solid #2a2a4a;}
+    .mobile-menu a:last-child{border-bottom:none;}
+    .mobile-menu.open{display:flex;}
+
+    /* ── Layout ── */
+    .container{max-width:1100px;margin:24px auto;padding:0 16px;}
+
+    /* ── Cards ── */
+    .card{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:20px;margin-bottom:16px;}
+
+    /* ── Buttons ── */
+    .btn{padding:10px 18px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;text-align:center;transition:opacity .2s;}
+    .btn:hover{opacity:.85;}
+    .btn-primary{background:#7c6af7;color:#fff;}
+    .btn-danger{background:#e74c3c;color:#fff;}
+    .btn-success{background:#27ae60;color:#fff;}
+    .btn-sm{padding:6px 12px;font-size:12px;}
+    .btn-full{width:100%;}
+
+    /* ── Forms ── */
+    input,textarea,select{width:100%;padding:10px 14px;border-radius:8px;border:1px solid #2a2a4a;background:#0f0f1a;color:#e0e0e0;font-size:14px;margin-bottom:14px;}
+    input:focus,textarea:focus{outline:none;border-color:#7c6af7;}
+    label{display:block;margin-bottom:6px;font-size:13px;color:#aaa;}
+
+    /* ── Alerts ── */
+    .alert{padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:14px;}
+    .alert-error{background:#3d1a1a;color:#e74c3c;border:1px solid #e74c3c;}
+    .alert-success{background:#1a3d2a;color:#27ae60;border:1px solid #27ae60;}
+
+    /* ── Stats grid ── */
+    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+
+    /* ── Password entry card ── */
+    .entry-card{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+    .entry-info{flex:1;min-width:0;}
+    .entry-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .entry-password{background:#0f0f1a;padding:6px 12px;border-radius:6px;font-size:13px;font-family:monospace;word-break:break-all;}
+
+    /* ── Badge ── */
+    .badge{padding:4px 10px;border-radius:20px;font-size:11px;color:#fff;white-space:nowrap;}
+
+    /* ── Auth forms ── */
+    .auth-wrap{max-width:420px;margin:40px auto;}
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .stats-grid{grid-template-columns:repeat(3,1fr);gap:8px;}
+      .stats-grid .card{padding:14px 10px;}
+      .entry-card{flex-direction:column;align-items:flex-start;}
+      .entry-actions{width:100%;justify-content:flex-start;}
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid{grid-template-columns:1fr;}
+      .auth-wrap{margin:20px auto;}
+      .card{padding:16px;}
+      nav{padding:12px 16px;}
+      nav .brand{font-size:17px;}
+    }
+  </style>
+</head>
+<body>
+
+{% if user.is_authenticated %}
+<nav>
+  <span class="brand">🔐 CipherVault</span>
+  <div class="nav-links">
+    <a href="/">Dashboard</a>
+    <a href="/add/">Add Password</a>
+    <a href="/generate/">Generator</a>
+    <a href="/breach/">Breach Check</a>
+    <a href="/logout/">Logout ({{ user.username }})</a>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Dashboard</a>
+  <a href="/add/">Add Password</a>
+  <a href="/generate/">Generator</a>
+  <a href="/breach/">Breach Check</a>
+  <a href="/logout/">Logout ({{ user.username }})</a>
+</div>
+{% endif %}
+
+<div class="container">
+  {% for message in messages %}
+    <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+      {{ message }}
+    </div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</div>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobile-menu');
+    const hamburger = document.querySelector('.hamburger');
+    if (menu && hamburger && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+</script>
+</body>
+</html>

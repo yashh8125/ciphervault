@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: mysql:8.0
+    container_name: ciphervault-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ciphervaultdb
+      MYSQL_USER: vaultuser
+      MYSQL_PASSWORD: vaultpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - vault-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ciphervault-web
+    restart: always
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             gunicorn ciphervault.wsgi --bind 0.0.0.0:8000"
+    environment:
+      MYSQL_DB:       ciphervaultdb
+      MYSQL_USER:     vaultuser
+      MYSQL_PASSWORD: vaultpassword
+      MYSQL_HOST:     db
+      MYSQL_PORT:     3306
+      CIPHER_KEY:     "rVakN3iI4PEXohJfgbl9kmDchNe-Wo4UFGvI6IBGJuk="
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+    
+    env_file:
+      - .env  
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8000"
+    networks:
+      - vault-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: ciphervault-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+    networks:
+      - vault-network
+
+volumes:
+  mysql_data:
+
+networks:
+  vault-network:
+    driver: bridge
