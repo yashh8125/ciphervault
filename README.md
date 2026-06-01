@@ -1,4 +1,4 @@
-# 🔐 CipherVault
+# CipherVault
 
 > A secure, self-hosted password manager with AES-256 encryption, breach detection, and password strength analysis — fully containerized with Docker.
 
@@ -10,25 +10,25 @@
 
 ---
 
-## 📌 About
+##  About
 
 CipherVault is a full-stack cybersecurity web application built from scratch. It allows users to securely store, manage, and audit their passwords. All passwords are encrypted using AES-256-GCM before being stored in the database — meaning even if the database is compromised, passwords remain unreadable.
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🔒 **AES-256-GCM Encryption** — passwords encrypted before storing in MySQL
-- 💪 **Password Strength Checker** — real-time scoring with feedback
-- 🎲 **Password Generator** — cryptographically secure random passwords
-- 🔍 **Breach Detection** — checks against HaveIBeenPwned API using k-anonymity (your password is never sent)
-- 👤 **User Authentication** — register, login, logout with Django auth
-- 📊 **Security Dashboard** — overview of total, weak, and strong passwords
-- 📱 **Mobile Responsive** — hamburger nav, responsive layout
+-  **AES-256-GCM Encryption** — passwords encrypted before storing in MySQL
+-  **Password Strength Checker** — real-time scoring with feedback
+-  **Password Generator** — cryptographically secure random passwords
+-  **Breach Detection** — checks against HaveIBeenPwned API using k-anonymity (your password is never sent)
+-  **User Authentication** — register, login, logout with Django auth
+-  **Security Dashboard** — overview of total, weak, and strong passwords
+-  **Mobile Responsive** — hamburger nav, responsive layout
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 Browser
@@ -44,7 +44,7 @@ MySQL 8.0                ← Encrypted password storage
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -58,7 +58,7 @@ MySQL 8.0                ← Encrypted password storage
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 ciphervault/
@@ -88,7 +88,7 @@ ciphervault/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Docker
@@ -135,7 +135,7 @@ http://localhost
 
 ---
 
-## 🔐 How Encryption Works
+##  How Encryption Works
 
 1. A random 12-byte **nonce** is generated for every password
 2. Password is encrypted using **AES-256-GCM** with the nonce
@@ -156,7 +156,7 @@ password = AESGCM(key).decrypt(nonce, ciphertext, None).decode()
 
 ---
 
-## 🔍 Breach Detection (k-Anonymity)
+##  Breach Detection (k-Anonymity)
 
 CipherVault uses the **HaveIBeenPwned** Pwned Passwords API with k-anonymity — your full password is **never sent** over the network:
 
@@ -167,7 +167,7 @@ CipherVault uses the **HaveIBeenPwned** Pwned Passwords API with k-anonymity —
 
 ---
 
-## 📱 Mobile Support
+##  Mobile Support
 
 - Responsive CSS with media queries
 - Hamburger navigation menu on mobile
@@ -176,7 +176,7 @@ CipherVault uses the **HaveIBeenPwned** Pwned Passwords API with k-anonymity —
 
 ---
 
-## ⚙️ Environment Variables
+##  Environment Variables
 
 | Variable | Description |
 |---|---|
@@ -189,7 +189,7 @@ CipherVault uses the **HaveIBeenPwned** Pwned Passwords API with k-anonymity —
 
 ---
 
-## 🛡️ Security Notes
+##  Security Notes
 
 - Passwords are encrypted **before** hitting the database
 - The `CIPHER_KEY` is loaded from environment variables — never hardcoded
@@ -199,13 +199,13 @@ CipherVault uses the **HaveIBeenPwned** Pwned Passwords API with k-anonymity —
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **Yash Mistry**
 - GitHub: [@yashh8125](https://github.com/yashh8125)
 
 ---
 
-## 📄 License
+##  License
 
 This project is open source and available under the [MIT License](LICENSE).
