@@ -20,7 +20,7 @@ pipeline {
             steps {
                 echo "Running linter..."
                 sh '''
-                    pip install flake8 --quiet
+                    pip install flake8 --quiet --break-system-packages || pip install flake8 --quiet
                     flake8 vault/ ciphervault/ --max-line-length=120 --exclude=venv,migrations || true
                 '''
             }
