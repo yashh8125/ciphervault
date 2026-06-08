@@ -30,6 +30,7 @@ pipeline {
             steps {
                 echo "Installing Python dependencies..."
                 sh '''
+                    sudo apt-get install -y python3-venv python3-pip 2>/dev/null || true
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install -r requirements.txt --quiet
