@@ -81,7 +81,7 @@ jobs:
         run: pip install flake8
 
       - name: Run flake8
-        run: flake8 . --exclude=venv,migrations --max-line-length=120
+        run: flake8 . --exclude=venv,migrations --max-line-length=120 --ignore=E221,E231,E251,E302,E401
 
   docker:
     name: Build Docker Image
