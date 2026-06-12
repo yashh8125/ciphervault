@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#this is a commit
+#this is a new commit
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
