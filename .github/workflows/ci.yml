@@ -35,6 +35,7 @@ jobs:
       MYSQL_HOST: 127.0.0.1
       MYSQL_PORT: 3306
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DJANGO_SETTINGS_MODULE: ciphervault.settings   # ← add this line
 
     steps:
       - name: Checkout code
